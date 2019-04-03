@@ -1,39 +1,60 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace mmm
 {
 
-	public interface IMmObject<TMm>
+	public interface IMmObject
 	{
-		TMm AddAttribute( IMmObject obj );
+		TMm AddAttribute<TMm>( IMmObject obj );
 
+		IMmObject				Parent { get; set; }
+		IEnumerable<IMmObject>	Children { get; set; }
+	}
+
+	public interface IMmLocatable
+	{
 		MmPosition Center { get; }
 	}
 
-
-	public class MmNode : IMmObject<MmNode>
+	public interface IMmAnchor
 	{
-		public Node	parent;
-		public Node	child;
-		public Node	sibling;
+
+	}
+
+
+	public class MmNode : IMmObject
+	{
+		private MmNode	parent;
+		private MmNode	child;
+		private MmNode	sibling;
 		
-		public Node( IMmObject data )
+		public IMmAnchor		AnchorHead;
+		public IMmAnchor		AnchorTail;
+		public List<IMmAnchor>	AnchorMiddles;
+
+		public MmNode( IMmObject data )
 		{
 
 		}
 
 	}
 
-	public class MmImage : IMmObject<MmImage>
+	public class MmImage : IMmObject
 	{
 
 	}
 
-	public struct MmPosition : IMmObject<MmPosition>
+	public class MmAnchorPoint : IMmObject
 	{
-		public float	x;
-		public float	y;
+		public MmPosition	position;
+	}
+
+	public struct MmPosition : IMmObject
+	{
+		public float	X;
+		public float	Y;
 	}
 }
 

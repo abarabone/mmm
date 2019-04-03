@@ -1,13 +1,16 @@
 
+unit:
+name@type<data>
+
 define:
-name@type<data> attr
+unit attr
 	child
 
 data:
-text|numeric|define(no attr)
+text|numeric|unit
 
 attr:
-name|define(no attr)
+name|unit
 
 child:
 name|define
