@@ -1,0 +1,52 @@
+
+define:
+name@type<data> attr
+	child
+
+data:
+text|numeric|define(no attr)
+
+attr:
+name|define(no attr)
+
+child:
+name|define
+
+innediate:
+text|numeric
+
+
+type:
+Node<text> Head, Tail, Color
+	Node|Image
+	
+Image<text|Path> anchorPoing, VSize, HSize
+VSise<numeric>
+HSize<numeric>
+
+AnchorPoint<Position>
+AnchorHandle<Position, Direction>
+
+Enclosure<> Type
+	Node
+Enclosure-Type<Round|Box|Circle>
+
+Arrow<text> Head, Tail, Arrow-Type
+Arrow-Head<Anchor|Node|Enclosure>
+Arrow-Tail<Anchor|Node|Enclosure>
+Arrow-Type<Line|Dot>
+
+Color<numeric>
+Center<Node|Enclosure>
+Path<text>
+Position<numeric, numeric>
+Direction<numeric, numeric>
+Round
+Box
+Circle
+Line
+Dot
+
+
+
+
