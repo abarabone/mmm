@@ -7,10 +7,10 @@ namespace mmm
 
 	public interface IMmObject
 	{
-		TMm AddAttribute<TMm>( IMmObject obj );
+		//TMm AddAttribute<TMm>( IMmObject obj );
 
-		IMmObject				Parent { get; set; }
-		IEnumerable<IMmObject>	Children { get; set; }
+		//IMmObject				Parent { get; set; }
+		//IEnumerable<IMmObject>	Children { get; set; }
 	}
 
 	public interface IMmLocatable

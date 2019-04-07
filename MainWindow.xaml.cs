@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Reactive.Bindings;
+using System.Reactive.Linq;
 
 
 namespace mmm
@@ -24,6 +26,19 @@ namespace mmm
 		public MainWindow()
 		{
 			InitializeComponent();
+
+			this.DataContext = this;
+			
 		}
+		//async void aaa()
+		//{
+		//	top = await Observable.Interval( TimeSpan.FromSeconds(1) ).Select( x => (int)x );
+		//	top = await Observable.Interval( TimeSpan.FromSeconds(1) ).Select( x => (int)x );
+		//	top = await Observable.Interval( TimeSpan.FromSeconds(1) ).Select( x => (int)x );
+		//}
+
+		//public int top { get; set; } = 100;
+		public IReactiveProperty<int> top { get; set; }
+			= Observable.Interval( TimeSpan.FromSeconds( 1 ) ).Select( x => (int)x ).ToReactiveProperty();
 	}
 }
