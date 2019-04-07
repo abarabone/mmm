@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Globalization;
+using System.Numerics;
 
 namespace mmm
 {
@@ -62,25 +63,91 @@ namespace mmm
 		public int	left { get; set; }
 
 		public string Text { get; set; }
-		public 
+		//public 
 
 		protected override void OnRender( DrawingContext drawingContext )
 		{
-			Pen pen = new Pen(Brushes.Black, 10);
-			Point pt1 = new Point(left, top);
-			Point pt2 = new Point(200, 100);
-			drawingContext.DrawLine( pen, pt1, pt2 );
+			var v0	= new Vector2( 0, 0 );
+			var v1	= new Vector2( top, left );
+			var v2	= new Vector2( 200, 100 );
+			var v3	= new Vector2( 200, 110 );
+			Pen pen = new Pen(Brushes.Green, 1.74f);
+
+			var iu	= new InterPolationUnit( v0, v1, v2, v3 );
+			for( var t=0.0f; t<1.0f; t+=0.1f )
+			{
+				var vt	= iu.Interpolate( t );
+				Point pt1 = new Point(left, top);
+				Point pt2 = new Point(200, 100);
+				drawingContext.DrawLine( pen, pt1, pt2 );
+			}
 		}
 
-	//	static class Utility
-	//{
+		public struct InterPolationUnit
+		{
+			Vector2 vt0;
+			Vector2 vt1;
+			Vector2 vt2;
+			Vector2 vt3;
+
+			Vector2 prev;
+
+			public InterPolationUnit( Vector2 v0, Vector2 v1, Vector2 v2, Vector2 v3 )
+			{
+				vt0	= v1;
+				vt1	= 0.5f * (v2 - v0);
+				vt2	= 0.5f * (2.0f * v0 - 5.0f * v1 + 4.0f * v2 - v3);
+				vt3	= 0.5f * (-v0 + 3.0f * v1 - 3.0f * v2 + v3);
+
+				prev_vector = vt1;
+			}
+			
+			public (Vector2 prev, Vector2 curr) Interpolate( float t )
+			{
+				var tt	= t * t;
+				var ttt	= tt * t;
+				var res	= (this.prev, curr:(vt0 + vt1 * t + vt2 * tt + vt3 * ttt));
+			}
+		}
 		
-	//	public static float4 Interpolate( float4 v0, float4 v1, float4 v2, float4 v3, float t )
-	//	{
-	//		//return Quaternion.Slerp( new quaternion(v1), new quaternion(v2), Mathf.Clamp01(t) ).ToFloat4();
-	//		return v1 + 0.5f * t * ( ( v2 - v0 ) + ( ( 2.0f * v0 - 5.0f * v1 + 4.0f * v2 - v3 ) + ( -v0 + 3.0f * v1 - 3.0f * v2 + v3 ) * t ) * t );
-	//	}
-	//}
-		
+		//public static Vector<float> Interpolate( Vector<float> v0, Vector<float> v1, Vector<float> v2, Vector<float> v3, float t )
+		//{
+		//	//return Quaternion.Slerp( new quaternion(v1), new quaternion(v2), Mathf.Clamp01(t) ).ToFloat4();
+		//	return v1 + 0.5f * t * ( ( v2 - v0 ) + ( ( 2.0f * v0 - 5.0f * v1 + 4.0f * v2 - v3 ) + ( -v0 + 3.0f * v1 - 3.0f * v2 + v3 ) * t ) * t );
+		//}
+		//public static Vector2 Interpolate( Vector2 v0, Vector2 v1, Vector2 v2, Vector2 v3, float t )
+		//{
+		//	//return Quaternion.Slerp( new quaternion(v1), new quaternion(v2), Mathf.Clamp01(t) ).ToFloat4();
+		//	return v1 + 0.5f * t * ( ( v2 - v0 ) + ( ( 2.0f * v0 - 5.0f * v1 + 4.0f * v2 - v3 ) + ( -v0 + 3.0f * v1 - 3.0f * v2 + v3 ) * t ) * t );
+		//}
+
+		//public struct InterPolationUnit
+		//{
+		//	Vector2 vt0;
+		//	Vector2 vt1;
+		//	Vector2 vt2;
+		//	Vector2 vt3;
+
+		//	public InterPolationUnit( Vector2 v0, Vector2 v1, Vector2 v2, Vector2 v3 )
+		//	{
+		//		vt0	= v1;
+		//		vt1	= v2 - v0;
+		//		vt2	= 2.0f * v0 - 5.0f * v1 + 4.0f * v2 - v3;
+		//		vt3	= -v0 + 3.0f * v1 - 3.0f * v2 + v3;
+		//	}
+			
+		//	public Vector2 Interpolate(  float t )
+		//	{
+		//		return vt0 + 0.5f * t * ( vt1 + ( vt2 + vt3 * t ) * t );
+		//		//return v1 + 0.5f * t * 
+		//		//	(
+		//		//		( v2 - v0 ) +
+		//		//		(
+		//		//			( 2.0f * v0 - 5.0f * v1 + 4.0f * v2 - v3 ) +
+		//		//			( -v0 + 3.0f * v1 - 3.0f * v2 + v3 ) * t
+		//		//		) * t
+		//		//	);
+		//	}
+		//}
 	}
 }
