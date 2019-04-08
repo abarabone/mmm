@@ -62,92 +62,154 @@ namespace mmm
 		public int	top { get; set; }
 		public int	left { get; set; }
 
-		public string Text { get; set; }
-		//public 
+		public string	Text { get; set; }
+
+		public readonly float[]	t_seeds = Enumerable.Range( 1, 128 ).Cast<float>().ToArray();
 
 		protected override void OnRender( DrawingContext drawingContext )
 		{
-			var v0	= new Vector2( 0, 0 );
-			var v1	= new Vector2( top, left );
-			var v2	= new Vector2( 200, 100 );
-			var v3	= new Vector2( 200, 110 );
-			Pen pen = new Pen(Brushes.Green, 1.74f);
+			
+			var segmentLength		= 10;
+			var totalElementLength	= (segmentLength - 1) * 2 * 2;// 中点 * ＸＹ要素 * 二本分
 
-			var iu	= new InterPolationUnit( v0, v1, v2, v3 );
-			for( var t=0.0f; t<1.0f; t+=0.1f )
+			var elementLength		= Vector<float>.Count;
+			
+
+			var inclement	= 1.0f / segmentLength;
+			for( var t = 0.0f; t < 1.0f+inclement ; t += inclement )
 			{
-				var vt	= iu.Interpolate( t );
-				Point pt1 = new Point(left, top);
-				Point pt2 = new Point(200, 100);
-				drawingContext.DrawLine( pen, pt1, pt2 );
+				
+			}
+				
+
+			var resultElementVetors	= new List<Vector<float>>();
+
+			for( var i = 0; i < resultElementVetors.Length; i++ )
+			{
+
 			}
 		}
 
 		public struct InterPolationUnit
 		{
-			Vector2 vt0;
-			Vector2 vt1;
-			Vector2 vt2;
-			Vector2 vt3;
+			Vector<float>	vt0;
+			Vector<float>	vt1;
+			Vector<float>	vt2;
+			Vector<float>	vt3;
 
-			Vector2 prev;
-
-			public InterPolationUnit( Vector2 v0, Vector2 v1, Vector2 v2, Vector2 v3 )
+			public InterPolationUnit( Vector<float> v0, Vector<float> v1, Vector<float> v2, Vector<float> v3 )
 			{
-				vt0	= v1;
-				vt1	= 0.5f * (v2 - v0);
-				vt2	= 0.5f * (2.0f * v0 - 5.0f * v1 + 4.0f * v2 - v3);
-				vt3	= 0.5f * (-v0 + 3.0f * v1 - 3.0f * v2 + v3);
-
-				prev_vector = vt1;
+				this.vt0	= v1;
+				this.vt1	= 0.5f * (v2 - v0);
+				this.vt2	= 0.5f * (2.0f * v0 - 5.0f * v1 + 4.0f * v2 - v3);
+				this.vt3	= 0.5f * (-v0 + 3.0f * v1 - 3.0f * v2 + v3);
 			}
 			
-			public (Vector2 prev, Vector2 curr) Interpolate( float t )
+			public Vector<float> Interpolate( Vector<float> t )
 			{
 				var tt	= t * t;
 				var ttt	= tt * t;
-				var res	= (this.prev, curr:(vt0 + vt1 * t + vt2 * tt + vt3 * ttt));
+				return ( vt0 + vt1 * t + vt2 * tt + vt3 * ttt );
 			}
 		}
-		
-		//public static Vector<float> Interpolate( Vector<float> v0, Vector<float> v1, Vector<float> v2, Vector<float> v3, float t )
+
+
+		//protected override void OnRender( DrawingContext drawingContext )
 		//{
-		//	//return Quaternion.Slerp( new quaternion(v1), new quaternion(v2), Mathf.Clamp01(t) ).ToFloat4();
-		//	return v1 + 0.5f * t * ( ( v2 - v0 ) + ( ( 2.0f * v0 - 5.0f * v1 + 4.0f * v2 - v3 ) + ( -v0 + 3.0f * v1 - 3.0f * v2 + v3 ) * t ) * t );
-		//}
-		//public static Vector2 Interpolate( Vector2 v0, Vector2 v1, Vector2 v2, Vector2 v3, float t )
-		//{
-		//	//return Quaternion.Slerp( new quaternion(v1), new quaternion(v2), Mathf.Clamp01(t) ).ToFloat4();
-		//	return v1 + 0.5f * t * ( ( v2 - v0 ) + ( ( 2.0f * v0 - 5.0f * v1 + 4.0f * v2 - v3 ) + ( -v0 + 3.0f * v1 - 3.0f * v2 + v3 ) * t ) * t );
+		//	var pen = new Pen( Brushes.Green, 1.74f );
+
+		//	//var iu	= new InterPolationUnit( v0, v1, v2, v3 );
+		//	//var prev = v1;
+		//	//for( var t=0.0f; t<=1.001f; t+=0.1f )
+		//	//{
+		//	//	var vt = iu.calc_line_segment( t );
+		//	//	Point pt1 = new Point( vt.start.X, vt.start.Y );
+		//	//	Point pt2 = new Point( vt.end.X, vt.end.Y );
+		//	//	drawingContext.DrawLine( pen, pt1, pt2 );
+		//	//	prev = vt.end;
+		//	//}
+			
+		//	var start	= new Vector2( left, top );
+		//	var end		= new Vector2( 200, 100 );
+
+		//	var dir	= end - start;
+		//	var len	= dir.Length();
+		//	var orth_width	= ( new Vector2( dir.Y, dir.X ) / len ) * 5.5f;
+
+		//	var end0	= end - orth_width;
+		//	var end1	= end + orth_width;
+
+		//	var v0	= new Vector4( start.X, start.Y-100, start.X, start.Y-100 );
+		//	var v1	= new Vector4( start.X, start.Y, start.X, start.Y );
+		//	var v2	= new Vector4( end0.X, end0.Y, end1.X, end1.Y );
+		//	var v3	= new Vector4( end0.X+100, end0.Y, end1.X+100, end1.Y );
+
+		//	var stream0	= new StreamGeometry();
+		//	var stream1	= new StreamGeometry();
+		//	//stream.FillRule = FillRule.EvenOdd;
+		//	using( var context0 = stream0.Open() )
+		//	using( var context1 = stream1.Open() )
+		//	{
+		//		var line_start	= new Point( start.X, start.Y );
+		//		context0.BeginFigure( line_start, isFilled:false, isClosed:false );
+		//		context1.BeginFigure( line_start, isFilled:false, isClosed:false );
+				
+		//		var iu	= new InterPolationUnit( v0, v1, v2, v3 );
+		//		for( var t = 0.1f; t < 1.0f; t += 0.1f )
+		//		{
+		//			var vt	= iu.Interpolate( t );
+		//			var pt0	= new Point( vt.X, vt.Y );
+		//			context0.LineTo( pt0, isStroked:true, isSmoothJoin:false );
+		//			var pt1	= new Point( vt.Z, vt.W );
+		//			context1.LineTo( pt1, isStroked:true, isSmoothJoin:false );
+		//		}
+				
+		//		var line_end0	= new Point( end0.X, end0.Y );
+		//		context0.LineTo( line_end0, isStroked:true, isSmoothJoin:false );
+		//		var line_end1	= new Point( end1.X, end1.Y );
+		//		context1.LineTo( line_end1, isStroked:true, isSmoothJoin:false );
+		//	}
+		//	//var combind = new CombinedGeometry( GeometryCombineMode.Union, stream0, stream1 );
+		//	//combind.Freeze();
+		//	//drawingContext.DrawGeometry( null, pen, combind );
+		//	//stream0.Freeze();
+		//	//stream1.Freeze();
+		//	//drawingContext.DrawGeometry( null, pen, stream0 );
+		//	//drawingContext.DrawGeometry( null, pen, stream1 );
+		//	var group = new GeometryGroup();
+		//	group.Children.Add( stream0 );
+		//	group.Children.Add( stream1 );
+		//	var line_end0_ = new Point( end0.X, end0.Y );
+		//	var line_end1_ = new Point( end1.X, end1.Y );
+		//	var line_close = new LineGeometry( line_end0_, line_end1_ );
+		//	group.Children.Add( line_close );
+		//	group.FillRule = FillRule.Nonzero;
+		//	var drawing = new GeometryDrawing( pen.Brush, pen, group );
+		//	drawingContext.DrawDrawing( drawing );
 		//}
 
 		//public struct InterPolationUnit
 		//{
-		//	Vector2 vt0;
-		//	Vector2 vt1;
-		//	Vector2 vt2;
-		//	Vector2 vt3;
+		//	Vector4 vt0;
+		//	Vector4 vt1;
+		//	Vector4 vt2;
+		//	Vector4 vt3;
 
-		//	public InterPolationUnit( Vector2 v0, Vector2 v1, Vector2 v2, Vector2 v3 )
+		//	public InterPolationUnit( Vector4 v0, Vector4 v1, Vector4 v2, Vector4 v3 )
 		//	{
-		//		vt0	= v1;
-		//		vt1	= v2 - v0;
-		//		vt2	= 2.0f * v0 - 5.0f * v1 + 4.0f * v2 - v3;
-		//		vt3	= -v0 + 3.0f * v1 - 3.0f * v2 + v3;
+		//		this.vt0	= v1;
+		//		this.vt1	= 0.5f * (v2 - v0);
+		//		this.vt2	= 0.5f * (2.0f * v0 - 5.0f * v1 + 4.0f * v2 - v3);
+		//		this.vt3	= 0.5f * (-v0 + 3.0f * v1 - 3.0f * v2 + v3);
 		//	}
 			
-		//	public Vector2 Interpolate(  float t )
+		//	public Vector4 Interpolate( float t )
 		//	{
-		//		return vt0 + 0.5f * t * ( vt1 + ( vt2 + vt3 * t ) * t );
-		//		//return v1 + 0.5f * t * 
-		//		//	(
-		//		//		( v2 - v0 ) +
-		//		//		(
-		//		//			( 2.0f * v0 - 5.0f * v1 + 4.0f * v2 - v3 ) +
-		//		//			( -v0 + 3.0f * v1 - 3.0f * v2 + v3 ) * t
-		//		//		) * t
-		//		//	);
+		//		var tt	= t * t;
+		//		var ttt	= tt * t;
+		//		return ( vt0 + vt1 * t + vt2 * tt + vt3 * ttt );
 		//	}
 		//}
+
 	}
 }

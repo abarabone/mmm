@@ -39,6 +39,6 @@ namespace mmm
 
 		//public int top { get; set; } = 100;
 		public IReactiveProperty<int> top { get; set; }
-			= Observable.Interval( TimeSpan.FromSeconds( 1 ) ).Select( x => (int)x ).ToReactiveProperty();
+			= Observable.Interval( TimeSpan.FromSeconds( 1 ) ).Select( x => (int)x*5 ).ToReactiveProperty();
 	}
 }
