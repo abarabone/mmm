@@ -69,22 +69,60 @@ namespace mmm
 		protected override void OnRender( DrawingContext drawingContext )
 		{
 			
+			var string_length		= 10;
+
 			var segmentLength		= 10;
 			var totalElementLength	= (segmentLength - 1) * 2 * 2;// 中点 * ＸＹ要素 * 二本分
 
 			var elementLength		= Vector<float>.Count;
 			
+			var t_vectors	= new Vector<float> [ (segmentLength-1)*2 + string_length ];
+			
+			var outline_param_length	= (segmentLength-1) * 2;	// 中点数 * ＸＹ要素 * 二本分
+			var	griph_param_length		= string_length * 2;		// 文字数 * ＸＹ要素
+			var spacer					= Vector<float>.Count % (outline_param_length * 2 + griph_param_length);
+			var iu_params	= new float [ outline_param_length * 2 + griph_param_length +  ];
 
-			var inclement	= 1.0f / segmentLength;
-			for( var t = 0.0f; t < 1.0f+inclement ; t += inclement )
+			var i	= 0;
+			make_outline_parameters_( iu_params, segmentLength-1, 1.0f / segmentLength, ref i );
+			make_gryph_parameters_( iu_params, string_length, 1.0f / (string_length+1), ref i );
+
+			return;
+
+
+			void make_outline_parameters_( float[] params_, int point_length_, float inclement_, ref int i_ )
 			{
-				
+				var t_	= inclement_;
+				for( ; i_ < point_length_; i_++ )
+				{
+					params_[i_++]	= t_;	// 1st x
+					params_[i_++]	= t_;	// 1st y
+					params_[i_++]	= t_;	// 2nd x
+					params_[i_++]	= t_;	// 2nd y
+					t_ += inclement_;
+				}
 			}
-				
+			void make_gryph_parameters_( float[] params_, int string_length_, float inclement_, ref int i_ )
+			{
+				var t_	= inclement_;
+				for( ; i_ < string_length_; i_++ )
+				{
+					params_[i_++]	= t_;	// x
+					params_[i_++]	= t_;	// y
+					t_ += inclement_;
+				}
+			}
+			
+			void interpolate_vectors_()
+			{
 
-			var resultElementVetors	= new List<Vector<float>>();
+			}
+			
+			void build_outline_from_vectors_()
+			{
 
-			for( var i = 0; i < resultElementVetors.Length; i++ )
+			}
+			void build_gryph_from_vectors_()
 			{
 
 			}
