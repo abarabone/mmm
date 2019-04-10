@@ -151,11 +151,11 @@ namespace mmm
 			}
 		}
 
-		public static class SimdArray<T> where T:struct
+		public static class SimdArray<T> where T:unmanaged
 		{
-			public T[] CreateFrom( )
+			public T[] CreateFrom()
 			{
-				var a = new Span<T>()
+				Span<T> aa = stackalloc T [ Vector<T>.Count ];
 			}
 		}
 		public static class SimdArrayExtensions
