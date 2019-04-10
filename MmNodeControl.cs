@@ -81,11 +81,11 @@ namespace mmm
 			var outline_param_length	= (segmentLength-1) * 2;	// 中点数 * ＸＹ要素 * 二本分
 			var	griph_param_length		= string_length * 2;		// 文字数 * ＸＹ要素
 			var spacer					= Vector<float>.Count % (outline_param_length * 2 + griph_param_length);
-			var iu_params	= new float [ outline_param_length * 2 + griph_param_length +  ];
+			//var iu_params	= new float [ outline_param_length * 2 + griph_param_length +  ];
 
 			var i	= 0;
-			make_outline_parameters_( iu_params, segmentLength-1, 1.0f / segmentLength, ref i );
-			make_gryph_parameters_( iu_params, string_length, 1.0f / (string_length+1), ref i );
+			//make_outline_parameters_( iu_params, segmentLength - 1, 1.0f / segmentLength, ref i );
+			//make_gryph_parameters_( iu_params, string_length, 1.0f / ( string_length + 1 ), ref i );
 
 			return;
 
@@ -149,6 +149,18 @@ namespace mmm
 				var ttt	= tt * t;
 				return ( vt0 + vt1 * t + vt2 * tt + vt3 * ttt );
 			}
+		}
+
+		public static class SimdArray<T> where T:struct
+		{
+			public T[] CreateFrom( )
+			{
+				var a = new Span<T>()
+			}
+		}
+		public static class SimdArrayExtensions
+		{
+
 		}
 
 
