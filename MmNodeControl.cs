@@ -64,7 +64,7 @@ namespace mmm
 
 		public string	Text { get; set; }
 
-		public readonly float[]	t_seeds = Enumerable.Range( 1, 128 ).Cast<float>().ToArray();
+		//public readonly float[]	t_seeds = Enumerable.Range( 1, 128 ).Cast<float>().ToArray();
 
 		protected override void OnRender( DrawingContext drawingContext )
 		{
@@ -151,17 +151,17 @@ namespace mmm
 			}
 		}
 
-		public static class SimdArray<T> where T:unmanaged
-		{
-			public T[] CreateFrom()
-			{
-				Span<T> aa = stackalloc T [ Vector<T>.Count ];
-			}
-		}
-		public static class SimdArrayExtensions
-		{
+		//public static class SimdArray<T> where T:unmanaged
+		//{
+		//	public T[] CreateFrom()
+		//	{
+		//		Span<T> aa = stackalloc T [ Vector<T>.Count ];
+		//	}
+		//}
+		//public static class SimdArrayExtensions
+		//{
 
-		}
+		//}
 
 
 		//protected override void OnRender( DrawingContext drawingContext )
