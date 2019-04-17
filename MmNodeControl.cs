@@ -28,6 +28,7 @@ namespace mmm
 			return;
 
 
+			// コントロールの初期化
 			void init_override_metadata_()
 			{
 				DefaultStyleKeyProperty.OverrideMetadata(
@@ -36,6 +37,7 @@ namespace mmm
 				);
 			}
 			
+			// 依存関係プロパティの初期化
 			void init_dependency_properties_
 				( string property_name, Action<MmNodeControl,int> property_chanded_proc )
 			{
@@ -56,7 +58,6 @@ namespace mmm
 					typeMetadata:	prop_metadata
 				);
 			}
-			
 		}
 
 		public int	top { get; set; }
@@ -68,7 +69,10 @@ namespace mmm
 
 		protected override void OnRender( DrawingContext drawingContext )
 		{
+			base.OnRender( drawingContext );
+
 			
+
 			var string_length		= 10;
 
 			var segmentLength		= 10;
